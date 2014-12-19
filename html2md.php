@@ -14,8 +14,8 @@ class Html2md
                 "patterns" => 'p',
                 "type" => null,
                 "replacement" => function ($str, $attrs, $innerHTML) {
-                        return $innerHTML ? "  \n  \n" . $innerHTML . "  \n" : '';
-                    }
+                    return $innerHTML ? "  \n  \n" . $innerHTML . "  \n" : '';
+                }
             ),
             array(
                 "patterns" => 'br',
@@ -26,12 +26,12 @@ class Html2md
                 "patterns" => 'h([1-6])',
                 "type" => null,
                 "replacement" => function ($str, $hLevel, $attrs, $innerHTML) {
-                        $hPrefix = '';
-                        for ($i = 0; $i < $hLevel; $i++) {
-                            $hPrefix .= '#';
-                        }
-                        return "\n\n" . $hPrefix . ' ' . $innerHTML . "\n";
+                    $hPrefix = '';
+                    for ($i = 0; $i < $hLevel; $i++) {
+                        $hPrefix .= '#';
                     }
+                    return "\n\n" . $hPrefix . ' ' . $innerHTML . "\n";
+                }
             ),
             array(
                 "patterns" => 'hr',
@@ -42,41 +42,41 @@ class Html2md
                 "patterns" => 'a',
                 "type" => null,
                 "replacement" => function ($str, $attrs, $innerHTML) {
-                        preg_match($this->attrRegExp('href'), $attrs, $href);
-                        preg_match($this->attrRegExp('title'), $attrs, $title);
-                        return $href ? '[' . $innerHTML . ']' . '(' . $href[1] . ($title && $title[1] ? ' "' . $title[1] . '"' : '') . ')' : $str;
-                    }
+                    preg_match($this->attrRegExp('href'), $attrs, $href);
+                    preg_match($this->attrRegExp('title'), $attrs, $title);
+                    return $href ? '[' . $innerHTML . ']' . '(' . $href[1] . ($title && $title[1] ? ' "' . $title[1] . '"' : '') . ')' : $str;
+                }
             ),
             array(
                 "patterns" => array('b', 'strong'),
                 "type" => null,
                 "replacement" => function ($str, $attrs, $innerHTML) {
-                        return $innerHTML ? '**' . $innerHTML . '**' : '';
-                    }
+                    return $innerHTML ? '**' . $innerHTML . '**' : '';
+                }
             ),
             array(
                 "patterns" => array('i', 'em'),
                 "type" => null,
                 "replacement" => function ($str, $attrs, $innerHTML) {
-                        return $innerHTML ? '_' . $innerHTML . '_' : '';
-                    }
+                    return $innerHTML ? '_' . $innerHTML . '_' : '';
+                }
             ),
             array(
                 "patterns" => 'code',
                 "type" => null,
                 "replacement" => function ($str, $attrs, $innerHTML) {
-                        return $innerHTML ? '`' . $innerHTML . '`' : '';
-                    }
+                    return $innerHTML ? '`' . $innerHTML . '`' : '';
+                }
             ),
             array(
                 "patterns" => 'img',
                 "type" => 'void',
                 "replacement" => function ($str, $attrs, $innerHTML) {
-                        preg_match($this->attrRegExp('src'), $attrs, $src);
-                        preg_match($this->attrRegExp('alt'), $attrs, $alt);
-                        preg_match($this->attrRegExp('title'), $attrs, $title);
-                        return '![' . ($alt && $alt[1] ? $alt[1] : '') . ']' . '(' . $src[1] . ($title && $title[1] ? ' "' . $title[1] . '"' : '') . ')';
-                    }
+                    preg_match($this->attrRegExp('src'), $attrs, $src);
+                    preg_match($this->attrRegExp('alt'), $attrs, $alt);
+                    preg_match($this->attrRegExp('title'), $attrs, $title);
+                    return '![' . ($alt && $alt[1] ? $alt[1] : '') . ']' . '(' . $src[1] . ($title && $title[1] ? ' "' . $title[1] . '"' : '') . ')';
+                }
             )
         );
         foreach ($ELEMENTS as $k1 => $v) {
@@ -201,25 +201,3 @@ class Html2md
         return $pattern;
     }
 }
-
-$html = new Html2md;
-$string = '<strong>B标签</strong>
-<em>em标签</em>
-<ol>
-     <li>ol</li>
-	<li>ol</li>
-</ol>
-<br>
-<blockquote>q标签</blockquote>
-<ul>
-	<li>ul</li>
-	<li>ul</li>
-</ul><br>
-<img src="http://www.baidu.com" alt="百度" /><br>
-<code>code标签</code><br>
-<a href="http://www.baidu.com" title="百度"></a><br>';
-$md = $html->toMarkdown($string);
-echo $string;
-?>
-<br><br><br>
-<textarea rows="20" cols="100"><?php echo $md; ?></textarea>
